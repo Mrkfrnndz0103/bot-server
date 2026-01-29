@@ -1,0 +1,18 @@
+{
+  "name": "bot-server",
+  "version": "1.0.0",
+  "description": "Workflow server to import Google Sheets data with column removal.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "build": "node -e \"console.log('No build step')\"",
+    "test": "node -e \"console.log('No tests specified')\""
+  },
+  "dependencies": {
+    "dotenv": "16.4.7",
+    "express": "4.19.2",
+    "googleapis": "140.0.0"
+  }
+}

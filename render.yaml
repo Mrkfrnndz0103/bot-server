@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: bot-server
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    disk:
+      name: poller-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: POLL_STATE_PATH
+        value: /var/data/poller-state.json
