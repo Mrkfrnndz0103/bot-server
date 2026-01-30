@@ -47,6 +47,13 @@ body {
   letter-spacing: -0.02em;
 }
 
+.hero-subtitle {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 560px;
+}
+
 .eyebrow {
   margin: 0;
   font-weight: 600;
@@ -72,6 +79,12 @@ body {
   padding: 20px 22px 26px;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: 2.3fr 1.4fr 1fr;
+  gap: 20px;
+}
+
 .card-header {
   display: flex;
   flex-direction: column;
@@ -95,6 +108,10 @@ body {
   overflow-x: auto;
   border-radius: 12px;
   border: 1px solid var(--border);
+}
+
+.table-wrap.compact {
+  margin-top: 12px;
 }
 
 table {
@@ -140,9 +157,58 @@ tbody td {
   border-left: 1px solid rgba(15, 90, 122, 0.08);
 }
 
+.chart-block {
+  position: relative;
+  height: 220px;
+}
+
+.chart-block.doughnut {
+  height: 260px;
+}
+
+.chart-block.line {
+  height: 240px;
+}
+
+.chart-block canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.placeholder {
+  height: 200px;
+  border-radius: 14px;
+  border: 1px dashed rgba(15, 90, 122, 0.25);
+  background: linear-gradient(135deg, #f8fbff 0%, #eef5fb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#stuckup-analysis-card .placeholder {
+  height: 220px;
+}
+
+#validation-trend-card .placeholder,
+#stuckup-trend-card .placeholder {
+  height: 240px;
+}
+
+#top-hubs-card .placeholder {
+  height: 240px;
+}
+
 @media (max-width: 720px) {
   .hero {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
 }

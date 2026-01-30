@@ -25,27 +25,94 @@
       <header class="hero">
         <div>
           <p class="eyebrow">Daily Briefing</p>
-          <h1>Regional Validation Summary</h1>
+          <h1>20hrs - 1d Validation Summary</h1>
+          <p class="hero-subtitle">
+            SOL shows highest stuckup orders (341 Ave L7D). 7-Day Average Stuck
+            Up Tagging is 664 orders. d.16-24 hrs Ageing Bucket is top
+            contributor.
+          </p>
         </div>
         <div class="status" id="last-updated">Loading…</div>
       </header>
 
-      <section class="card">
-        <div class="card-header">
-          <h2>Regional Validation Summary</h2>
-          <p class="card-subtitle">
-            Pivot data pulled from the destination sheet.
-          </p>
+      <section class="grid">
+        <div class="card" id="regional-card">
+          <div class="card-header">
+            <h2>Regional Validation Summary</h2>
+            <p class="card-subtitle">
+              Pivot data pulled from the destination sheet.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table id="regional-table">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
-        <div class="table-wrap">
-          <table id="regional-table">
-            <thead></thead>
-            <tbody></tbody>
-          </table>
+
+        <div class="card" id="ageing-card">
+          <div class="card-header">
+            <h2>Ageing Bucket Analysis</h2>
+            <p class="card-subtitle">Awaiting data source.</p>
+          </div>
+          <div class="chart-block">
+            <canvas id="ageing-chart"></canvas>
+          </div>
+          <div class="table-wrap compact">
+            <table id="ageing-table">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" id="top-hubs-card">
+          <div class="card-header">
+            <h2>Top Hubs</h2>
+            <p class="card-subtitle">Awaiting data source.</p>
+          </div>
+          <div class="chart-block doughnut">
+            <canvas id="top-hubs-chart"></canvas>
+          </div>
+        </div>
+
+        <div class="card" id="stuckup-analysis-card">
+          <div class="card-header">
+            <h2>Stuck Up Tagging Analysis</h2>
+            <p class="card-subtitle">Awaiting data source.</p>
+          </div>
+          <div class="table-wrap">
+            <table id="stuckup-table">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" id="validation-trend-card">
+          <div class="card-header">
+            <h2>20hrs - 1d Validation Trend</h2>
+            <p class="card-subtitle">Awaiting data source.</p>
+          </div>
+          <div class="chart-block line">
+            <canvas id="validation-trend-chart"></canvas>
+          </div>
+        </div>
+
+        <div class="card" id="stuckup-trend-card">
+          <div class="card-header">
+            <h2>Stuck Up Tagging Trend</h2>
+            <p class="card-subtitle">Awaiting data source.</p>
+          </div>
+          <div class="chart-block line">
+            <canvas id="stuckup-trend-chart"></canvas>
+          </div>
         </div>
       </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <script src="/public/dashboard.js"></script>
   </body>
 </html>
