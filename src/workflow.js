@@ -3,6 +3,7 @@ const {
   readValues,
   writeValues,
   clearSheet,
+  clearRange,
   removeColumnsFromRows,
   keepColumnsFromRows,
   getSheetTitleById,
@@ -114,11 +115,19 @@ async function importRows({
   );
 
   if (clearDestination) {
-    await clearSheet(
-      sheets,
-      destination.spreadsheetId,
-      destinationSheetName
-    );
+    if (destination.clearRange) {
+      const rangeToClear = normalizeRange(
+        destination.clearRange,
+        destinationSheetName
+      );
+      await clearRange(sheets, destination.spreadsheetId, rangeToClear);
+    } else {
+      await clearSheet(
+        sheets,
+        destination.spreadsheetId,
+        destinationSheetName
+      );
+    }
   }
 
   return writeValues(

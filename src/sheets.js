@@ -105,6 +105,13 @@ async function clearSheet(sheets, spreadsheetId, sheetName) {
   });
 }
 
+async function clearRange(sheets, spreadsheetId, range) {
+  await sheets.spreadsheets.values.clear({
+    spreadsheetId,
+    range,
+  });
+}
+
 async function writeValues(
   sheets,
   spreadsheetId,
@@ -217,6 +224,7 @@ module.exports = {
   readValues,
   batchReadValues,
   clearSheet,
+  clearRange,
   writeValues,
   removeColumnsFromRows,
   keepColumnsFromRows,
