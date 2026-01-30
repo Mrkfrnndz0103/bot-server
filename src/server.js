@@ -3,8 +3,7 @@ const dotenv = require("dotenv");
 const http = require("http");
 const https = require("https");
 const { URL } = require("url");
-const path = require("path");
-const { buildSheetsClient, getSheetTitleById, readValues } = require("./sheets");
+const { buildSheetsClient } = require("./sheets");
 const { runImport } = require("./workflow");
 const { startPolling, getPollingStatus } = require("./poller");
 
@@ -22,14 +21,8 @@ app.get("/health", (_req, res) => {
 });
 
 app.get("/", (_req, res) => {
-  res.redirect("/dashboard");
+  res.json({ ok: true });
 });
-
-app.get("/dashboard", (_req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "dashboard.html"));
-});
-
-app.use("/public", express.static(path.join(__dirname, "..", "public")));
 
 app.get("/polling/status", (_req, res) => {
   res.json({
@@ -38,143 +31,6 @@ app.get("/polling/status", (_req, res) => {
     statePath: pollingState ? pollingState.statePath : null,
   });
 });
-
-app.get("/api/regional-validation", async (_req, res) => {
-  try {
-    const sheets = app.locals.sheets || (await buildSheetsClient());
-
-    const spreadsheetId = process.env.PIVOT_SPREADSHEET_ID;
-    const gidValue = process.env.PIVOT_GID;
-    const pivotRange = process.env.PIVOT_RANGE;
-
-    if (!spreadsheetId || !gidValue || !pivotRange) {
-      return res.status(400).json({
-        error: "Missing PIVOT_SPREADSHEET_ID, PIVOT_GID, or PIVOT_RANGE.",
-      });
-    }
-
-    const sheetTitle = await getSheetTitleById(
-      sheets,
-      spreadsheetId,
-      Number(gidValue)
-    );
-
-    const range = pivotRange.includes("!")
-      ? pivotRange
-      : `${sheetTitle}!${pivotRange}`;
-
-    const values = await readValues(sheets, spreadsheetId, range);
-    const headers = values[0] || [];
-    const rows = values.slice(1);
-
-    return res.json({
-      ok: true,
-      headers,
-      rows,
-      range,
-    });
-  } catch (error) {
-    const message =
-      error && typeof error.message === "string"
-        ? error.message
-        : "Unknown error";
-    return res.status(500).json({ error: message });
-  }
-});
-
-app.get("/api/stuckup-analysis", async (_req, res) => {
-  try {
-    const sheets = app.locals.sheets || (await buildSheetsClient());
-
-    const spreadsheetId = process.env.PIVOT_SPREADSHEET_ID;
-    const gidValue = process.env.PIVOT_GID;
-    const pivotRange = process.env.PIVOT_STUCKUP_RANGE;
-
-    if (!spreadsheetId || !gidValue || !pivotRange) {
-      return res.status(400).json({
-        error:
-          "Missing PIVOT_SPREADSHEET_ID, PIVOT_GID, or PIVOT_STUCKUP_RANGE.",
-      });
-    }
-
-    const sheetTitle = await getSheetTitleById(
-      sheets,
-      spreadsheetId,
-      Number(gidValue)
-    );
-
-    const range = pivotRange.includes("!")
-      ? pivotRange
-      : `${sheetTitle}!${pivotRange}`;
-
-    const values = await readValues(sheets, spreadsheetId, range);
-    const headers = values[0] || [];
-    const rows = values.slice(1);
-
-    return res.json({
-      ok: true,
-      headers,
-      rows,
-      range,
-    });
-  } catch (error) {
-    const message =
-      error && typeof error.message === "string"
-        ? error.message
-        : "Unknown error";
-    return res.status(500).json({ error: message });
-  }
-});
-
-function buildPivotHandler(envKey) {
-  return async (_req, res) => {
-    try {
-      const sheets = app.locals.sheets || (await buildSheetsClient());
-
-      const spreadsheetId = process.env.PIVOT_SPREADSHEET_ID;
-      const gidValue = process.env.PIVOT_GID;
-      const pivotRange = process.env[envKey];
-
-      if (!spreadsheetId || !gidValue || !pivotRange) {
-        return res.status(400).json({
-          error: `Missing PIVOT_SPREADSHEET_ID, PIVOT_GID, or ${envKey}.`,
-        });
-      }
-
-      const sheetTitle = await getSheetTitleById(
-        sheets,
-        spreadsheetId,
-        Number(gidValue)
-      );
-
-      const range = pivotRange.includes("!")
-        ? pivotRange
-        : `${sheetTitle}!${pivotRange}`;
-
-      const values = await readValues(sheets, spreadsheetId, range);
-      const headers = values[0] || [];
-      const rows = values.slice(1);
-
-      return res.json({
-        ok: true,
-        headers,
-        rows,
-        range,
-      });
-    } catch (error) {
-      const message =
-        error && typeof error.message === "string"
-          ? error.message
-          : "Unknown error";
-      return res.status(500).json({ error: message });
-    }
-  };
-}
-
-app.get("/api/ageing-bucket", buildPivotHandler("PIVOT_AGEING_RANGE"));
-app.get("/api/top-hubs", buildPivotHandler("PIVOT_TOP_HUBS_RANGE"));
-app.get("/api/validation-trend", buildPivotHandler("PIVOT_VALIDATION_TREND_RANGE"));
-app.get("/api/stuckup-trend", buildPivotHandler("PIVOT_STUCKUP_TREND_RANGE"));
 
 app.post("/import", async (req, res) => {
   try {
