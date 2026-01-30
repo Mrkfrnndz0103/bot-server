@@ -15,3 +15,7 @@ services:
         value: 18
       - key: POLL_STATE_PATH
         value: /var/data/poller-state.json
+      - key: PING_URL
+        value: https://bot-server-sn2e.onrender.com/health
+      - key: PING_INTERVAL_MS
+        value: 300000
