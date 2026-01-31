@@ -20,6 +20,10 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
 
+app.get("/", (_req, res) => {
+  res.json({ ok: true });
+});
+
 app.get("/polling/status", (_req, res) => {
   res.json({
     ok: true,
@@ -117,6 +121,7 @@ app.post("/import", async (req, res) => {
 
 async function bootstrap() {
   const sheets = await buildSheetsClient();
+  app.locals.sheets = sheets;
 
   const jobsEnv = process.env.POLL_JOBS_JSON;
   if (jobsEnv) {
